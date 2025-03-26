@@ -1,0 +1,73 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Unreal Editor",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "cmd.exe",
+            "args": [
+                "/c",
+                "start",
+                "",
+                "${workspaceFolder}/CWGameV3.uproject"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "externalTerminal",
+            "preLaunchTask": "Build CWGameV3 Development Win64"
+        },
+        {
+            "name": "Attach to Unreal Editor",
+            "type": "cppvsdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "filterProcesses": true,
+            "filterProcessName": "UnrealEditor.exe"
+        },
+        {
+            "name": "Attach to Unreal Game",
+            "type": "cppvsdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "filterProcesses": true,
+            "filterProcessName": "UnrealGame*.exe"
+        },
+        {
+            "name": "Debug Game in Editor",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "UnrealEditor-Win64-DebugGame.exe",
+            "args": [
+                "${workspaceFolder}/CWGameV3.uproject"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "externalTerminal"
+        },
+        {
+            "name": "Launch Standalone Game (Development)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "UnrealGame.exe",
+            "args": [
+                "${workspaceFolder}/CWGameV3.uproject"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "externalTerminal"
+        },
+        {
+            "name": "Launch Standalone Game (DebugGame)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "UnrealGame-Win64-DebugGame.exe",
+            "args": [
+                "${workspaceFolder}/CWGameV3.uproject"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "externalTerminal"
+        }
+    ]
+} 

@@ -1,0 +1,58 @@
+[
+	{
+		"file": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Source\\CWGameV3\\CWGameV3.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Unreal Engine 5 Projects\\CWGameV3\\.vscode\\compileCommands_CWGameV3\\CWGameV3.1.rsp"
+		],
+		"directory": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Source"
+	},
+	{
+		"file": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Source\\CWGameV3\\CWGameV3.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Unreal Engine 5 Projects\\CWGameV3\\.vscode\\compileCommands_CWGameV3\\CWGameV3.1.rsp"
+		],
+		"directory": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Source"
+	},
+	{
+		"file": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Source\\CWGameV3\\CWGameV3.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Unreal Engine 5 Projects\\CWGameV3\\.vscode\\compileCommands_CWGameV3\\CWGameV3.1.rsp"
+		],
+		"directory": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Source"
+	},
+	{
+		"file": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Source\\CWGameV3\\Private\\Characters\\CWBaseCharacter.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Unreal Engine 5 Projects\\CWGameV3\\.vscode\\compileCommands_CWGameV3\\CWGameV3.1.rsp"
+		],
+		"directory": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Source"
+	},
+	{
+		"file": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Source\\CWGameV3\\Private\\GameModes\\CWBaseGameMode.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Unreal Engine 5 Projects\\CWGameV3\\.vscode\\compileCommands_CWGameV3\\CWGameV3.1.rsp"
+		],
+		"directory": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Source"
+	},
+	{
+		"file": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Source\\CWGameV3\\Public\\Characters\\CWBaseCharacter.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Unreal Engine 5 Projects\\CWGameV3\\.vscode\\compileCommands_CWGameV3\\CWGameV3.1.rsp"
+		],
+		"directory": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Source"
+	},
+	{
+		"file": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Source\\CWGameV3\\Public\\GameModes\\CWBaseGameMode.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@E:\\Unreal Engine 5 Projects\\CWGameV3\\.vscode\\compileCommands_CWGameV3\\CWGameV3.1.rsp"
+		],
+		"directory": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Source"
+	}
+]

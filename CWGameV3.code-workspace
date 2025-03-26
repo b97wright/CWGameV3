@@ -1,0 +1,613 @@
+{
+	"folders": [
+		{
+			"name": "CWGameV3",
+			"path": "."
+		},
+		{
+			"name": "UE5",
+			"path": "G:\\Epic Game Launcher\\UE_5.4"
+		}
+	],
+	"settings": {
+		"typescript.tsc.autoDetect": "off",
+		"npm.autoDetect": "off"
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cpptools",
+			"ms-dotnettools.csharp"
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "CWGameV3 Win64 Debug Build",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Debug",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Debug Rebuild",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Debug",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"CWGameV3 Win64 Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Debug Clean",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Debug",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 DebugGame Build",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"DebugGame",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"DebugGame",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"CWGameV3 Win64 DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 DebugGame Clean",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"DebugGame",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Development Build",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Development",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Development Rebuild",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Development",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"CWGameV3 Win64 Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Development Clean",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Development",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Test Build",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Test",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Test Rebuild",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Test",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"CWGameV3 Win64 Test Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Test Clean",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Test",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Shipping Build",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Shipping",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Shipping Rebuild",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Shipping",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"CWGameV3 Win64 Shipping Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3 Win64 Shipping Clean",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+				"args": [
+					"CWGameV3",
+					"Win64",
+					"Shipping",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 Debug Build",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"Debug",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 Debug Rebuild",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"Debug",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"CWGameV3Editor Win64 Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 Debug Clean",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"Debug",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 DebugGame Build",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"DebugGame",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"DebugGame",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"CWGameV3Editor Win64 DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 DebugGame Clean",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"DebugGame",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 Development Build",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"Development",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 Development Rebuild",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"Development",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"CWGameV3Editor Win64 Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"label": "CWGameV3Editor Win64 Development Clean",
+				"group": "build",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+				"args": [
+					"CWGameV3Editor",
+					"Win64",
+					"Development",
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Launch CWGameV3 (Debug)",
+				"request": "launch",
+				"program": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Binaries\\Win64\\UnrealGame-Win64-Debug.exe",
+				"preLaunchTask": "CWGameV3 Win64 Debug Build",
+				"args": [
+				],
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4",
+				"stopAtEntry": false,
+				"console": "integratedTerminal",
+				"type": "cppvsdbg",
+				"visualizerFile": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"sourceFileMap": {
+					"D:\\build\\++UE5\\Sync": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"name": "Launch CWGameV3 (DebugGame)",
+				"request": "launch",
+				"program": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Binaries\\Win64\\UnrealGame-Win64-DebugGame.exe",
+				"preLaunchTask": "CWGameV3 Win64 DebugGame Build",
+				"args": [
+				],
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4",
+				"stopAtEntry": false,
+				"console": "integratedTerminal",
+				"type": "cppvsdbg",
+				"visualizerFile": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"sourceFileMap": {
+					"D:\\build\\++UE5\\Sync": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"name": "Launch CWGameV3 (Development)",
+				"request": "launch",
+				"program": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Binaries\\Win64\\UnrealGame.exe",
+				"preLaunchTask": "CWGameV3 Win64 Development Build",
+				"args": [
+				],
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4",
+				"stopAtEntry": false,
+				"console": "integratedTerminal",
+				"type": "cppvsdbg",
+				"visualizerFile": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"sourceFileMap": {
+					"D:\\build\\++UE5\\Sync": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"name": "Launch CWGameV3 (Test)",
+				"request": "launch",
+				"program": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Binaries\\Win64\\UnrealGame-Win64-Test.exe",
+				"preLaunchTask": "CWGameV3 Win64 Test Build",
+				"args": [
+				],
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4",
+				"stopAtEntry": false,
+				"console": "integratedTerminal",
+				"type": "cppvsdbg",
+				"visualizerFile": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"sourceFileMap": {
+					"D:\\build\\++UE5\\Sync": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"name": "Launch CWGameV3 (Shipping)",
+				"request": "launch",
+				"program": "E:\\Unreal Engine 5 Projects\\CWGameV3\\Binaries\\Win64\\UnrealGame-Win64-Shipping.exe",
+				"preLaunchTask": "CWGameV3 Win64 Shipping Build",
+				"args": [
+				],
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4",
+				"stopAtEntry": false,
+				"console": "integratedTerminal",
+				"type": "cppvsdbg",
+				"visualizerFile": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"sourceFileMap": {
+					"D:\\build\\++UE5\\Sync": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"name": "Launch CWGameV3Editor (Debug)",
+				"request": "launch",
+				"program": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Binaries\\Win64\\UnrealEditor-Win64-Debug.exe",
+				"preLaunchTask": "CWGameV3Editor Win64 Debug Build",
+				"args": [
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject"
+				],
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4",
+				"stopAtEntry": false,
+				"console": "integratedTerminal",
+				"type": "cppvsdbg",
+				"visualizerFile": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"sourceFileMap": {
+					"D:\\build\\++UE5\\Sync": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"name": "Launch CWGameV3Editor (DebugGame)",
+				"request": "launch",
+				"program": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Binaries\\Win64\\UnrealEditor-Win64-DebugGame.exe",
+				"preLaunchTask": "CWGameV3Editor Win64 DebugGame Build",
+				"args": [
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject"
+				],
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4",
+				"stopAtEntry": false,
+				"console": "integratedTerminal",
+				"type": "cppvsdbg",
+				"visualizerFile": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"sourceFileMap": {
+					"D:\\build\\++UE5\\Sync": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"name": "Launch CWGameV3Editor (Development)",
+				"request": "launch",
+				"program": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Binaries\\Win64\\UnrealEditor.exe",
+				"preLaunchTask": "CWGameV3Editor Win64 Development Build",
+				"args": [
+					"E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject"
+				],
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4",
+				"stopAtEntry": false,
+				"console": "integratedTerminal",
+				"type": "cppvsdbg",
+				"visualizerFile": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Extras\\VisualStudioDebugging\\Unreal.natvis",
+				"sourceFileMap": {
+					"D:\\build\\++UE5\\Sync": "G:\\Epic Game Launcher\\UE_5.4"
+				}
+			},
+			{
+				"name": "Generate Project Files",
+				"type": "coreclr",
+				"request": "launch",
+				"preLaunchTask": "UnrealBuildTool Win64 Development Build",
+				"program": "G:\\Epic Game Launcher\\UE_5.4\\Engine\\Build\\BatchFiles\\RunUBT.bat",
+				"args": [
+					"-projectfiles",
+					"-vscode",
+					"-project=E:\\Unreal Engine 5 Projects\\CWGameV3\\CWGameV3.uproject",
+					"-game",
+					"-engine",
+					"-dotnet"
+				],
+				"console": "integratedTerminal",
+				"stopAtEntry": false,
+				"cwd": "G:\\Epic Game Launcher\\UE_5.4"
+			}
+		]
+	}
+}
