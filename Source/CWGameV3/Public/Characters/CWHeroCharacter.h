@@ -16,6 +16,12 @@ class CWGAMEV3_API ACWHeroCharacter : public ACWBaseCharacter
 {
 	GENERATED_BODY()
 
+public:
+
+	// Constructor for the hero character class
+	ACWHeroCharacter(); // Make a default constructor for the hero character class
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
