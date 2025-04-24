@@ -24,6 +24,9 @@ ACWHeroCharacter::ACWHeroCharacter()
     GetCharacterMovement()->bOrientRotationToMovement = true;
     GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
     GetCharacterMovement()->JumpZVelocity = 600.0f;
+    GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+    GetCharacterMovement()->MinAnalogWalkSpeed = 20.0f;
+    GetCharacterMovement()->BrakingDecelerationWalking = 2000.0f;
     GetCharacterMovement()->AirControl = 0.2f;
 
     // Create and setup camera boom
