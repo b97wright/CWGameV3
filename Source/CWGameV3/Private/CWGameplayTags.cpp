@@ -12,6 +12,7 @@ namespace CWGameplayTags
     UE_DEFINE_GAMEPLAY_TAG(TAG_Input_Sprint, TEXT("Input.Sprint"));
     UE_DEFINE_GAMEPLAY_TAG(TAG_Input_Crouch, TEXT("Input.Crouch"));
     UE_DEFINE_GAMEPLAY_TAG(TAG_Input_Interact, TEXT("Input.Interact"));
+    UE_DEFINE_GAMEPLAY_TAG(TAG_Input_ToggleTrajectory, TEXT("Input.ToggleTrajectory"));
 
     /** Combat Tags */
     UE_DEFINE_GAMEPLAY_TAG(TAG_Combat_Attack, TEXT("Combat.Attack"));

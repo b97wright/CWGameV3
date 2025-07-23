@@ -25,8 +25,7 @@ protected:
 
 public:
 	// Movement state management
-	UFUNCTION(BlueprintCallable, Category = "Character Movement")
-	void SetMovementMode(EMovementMode NewMovementMode, uint8 NewCustomMode = 0);
+	virtual void SetMovementMode(EMovementMode NewMovementMode, uint8 NewCustomMode = 0) override;
 
 	UFUNCTION(BlueprintPure, Category = "Character Movement")
 	bool IsMoving() const;
@@ -34,8 +33,8 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Character Movement")
 	bool IsSprinting() const;
 
-	UFUNCTION(BlueprintPure, Category = "Character Movement")
-	bool IsCrouching() const;
+	// Override the IsCrouching function to return true if the character is crouching
+	virtual bool IsCrouching() const override;
 
 	// Enhanced movement functions
 	UFUNCTION(BlueprintCallable, Category = "Character Movement")

@@ -11,6 +11,8 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UDataAsset_InputConfig;
+class UCWCharacterMovementComponent;
+class UCWCharacterTrajectoryComponent;
 struct FInputActionValue;
 
 /* ***************************************************** */
@@ -41,6 +43,34 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
 
+public:
+	// Component access functions
+	UFUNCTION(BlueprintCallable, Category = "Character Components")
+	UCWCharacterMovementComponent* GetCWMovementComponent() const { return CWMovementComponent; }
+
+	UFUNCTION(BlueprintCallable, Category = "Character Components")
+	UCWCharacterTrajectoryComponent* GetTrajectoryComponent() const { return TrajectoryComponent; }
+
+	// Movement helper functions
+	UFUNCTION(BlueprintCallable, Category = "Character Movement")
+	void StartSprint();
+
+	UFUNCTION(BlueprintCallable, Category = "Character Movement")
+	void StopSprint();
+
+	UFUNCTION(BlueprintCallable, Category = "Character Movement")
+	void ToggleCrouch();
+
+	// Trajectory helper functions
+	UFUNCTION(BlueprintCallable, Category = "Character Trajectory")
+	void ToggleTrajectoryVisualization();
+
+	UFUNCTION(BlueprintCallable, Category = "Character Trajectory")
+	void StartTrajectoryRecording();
+
+	UFUNCTION(BlueprintCallable, Category = "Character Trajectory")
+	void StopTrajectoryRecording();
+
 private:
 
 #pragma region Components
@@ -50,6 +80,12 @@ USpringArmComponent* CameraBoom;
 
 UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 UCameraComponent* FollowCamera;
+
+UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+UCWCharacterMovementComponent* CWMovementComponent;
+
+UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Trajectory", meta = (AllowPrivateAccess = "true"))
+UCWCharacterTrajectoryComponent* TrajectoryComponent;
 
 #pragma endregion
 
@@ -62,6 +98,9 @@ UDataAsset_InputConfig* InputConfigDataAsset;
 void Input_Move(const FInputActionValue& InputActionValue);
 void Input_Look(const FInputActionValue& InputActionValue);
 void Input_Jump(const FInputActionValue& InputActionValue);
+void Input_Sprint(const FInputActionValue& InputActionValue);
+void Input_Crouch(const FInputActionValue& InputActionValue);
+void Input_ToggleTrajectory(const FInputActionValue& InputActionValue);
 
 
 #pragma endregion

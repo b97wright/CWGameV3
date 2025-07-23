@@ -5,6 +5,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/Movement/CWCharacterMovementComponent.h"
+#include "Components/Trajectory/CWCharacterTrajectoryComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/CWInputComponent.h"
@@ -45,6 +47,12 @@ ACWHeroCharacter::ACWHeroCharacter()
     FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
     FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
     FollowCamera->bUsePawnControlRotation = false;
+
+    // Create and setup custom movement component
+    CWMovementComponent = CreateDefaultSubobject<UCWCharacterMovementComponent>(TEXT("CWMovementComponent"));
+    
+    // Create and setup trajectory component
+    TrajectoryComponent = CreateDefaultSubobject<UCWCharacterTrajectoryComponent>(TEXT("TrajectoryComponent"));
 }
 
 void ACWHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -65,8 +73,9 @@ void ACWHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
     CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
     CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
     CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_Jump, ETriggerEvent::Triggered, this, &ThisClass::Input_Jump);
-    //CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_Sprint, ETriggerEvent::Triggered, this, &ThisClass::Sprint);
-    //CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_Crouch, ETriggerEvent::Triggered, this, &ThisClass::Crouch);
+    CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_Sprint, ETriggerEvent::Triggered, this, &ThisClass::Input_Sprint);
+    CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_Crouch, ETriggerEvent::Triggered, this, &ThisClass::Input_Crouch);
+    CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_ToggleTrajectory, ETriggerEvent::Triggered, this, &ThisClass::Input_ToggleTrajectory);
     //CWInputComponent->BindNativeInputAction(InputConfigDataAsset, CWGameplayTags::TAG_Input_Interact, ETriggerEvent::Triggered, this, &ThisClass::Interact);
 } 
 
@@ -124,5 +133,108 @@ void ACWHeroCharacter::Input_Jump(const FInputActionValue &InputActionValue)
     {
         // Character is on ground
         Jump();
+    }
+}
+
+void ACWHeroCharacter::Input_Sprint(const FInputActionValue &InputActionValue)
+{
+    if (CWMovementComponent)
+    {
+        if (InputActionValue.Get<bool>())
+        {
+            CWMovementComponent->StartSprint();
+        }
+        else
+        {
+            CWMovementComponent->StopSprint();
+        }
+    }
+}
+
+void ACWHeroCharacter::Input_Crouch(const FInputActionValue &InputActionValue)
+{
+    if (CWMovementComponent && InputActionValue.Get<bool>())
+    {
+        CWMovementComponent->ToggleCrouch();
+    }
+}
+
+void ACWHeroCharacter::Input_ToggleTrajectory(const FInputActionValue &InputActionValue)
+{
+    if (TrajectoryComponent && InputActionValue.Get<bool>())
+    {
+        static bool bTrajectoryVisible = false;
+        bTrajectoryVisible = !bTrajectoryVisible;
+        TrajectoryComponent->ShowTrajectory(bTrajectoryVisible);
+        
+        if (bTrajectoryVisible)
+        {
+            Debug::Print(TEXT("Trajectory visualization enabled"));
+        }
+        else
+        {
+            Debug::Print(TEXT("Trajectory visualization disabled"));
+        }
+    }
+}
+
+void ACWHeroCharacter::StartSprint()
+{
+    if (CWMovementComponent)
+    {
+        CWMovementComponent->StartSprint();
+    }
+}
+
+void ACWHeroCharacter::StopSprint()
+{
+    if (CWMovementComponent)
+    {
+        CWMovementComponent->StopSprint();
+    }
+}
+
+void ACWHeroCharacter::ToggleCrouch()
+{
+    if (CWMovementComponent)
+    {
+        CWMovementComponent->ToggleCrouch();
+    }
+}
+
+void ACWHeroCharacter::ToggleTrajectoryVisualization()
+{
+    if (TrajectoryComponent)
+    {
+        static bool bTrajectoryVisible = false;
+        bTrajectoryVisible = !bTrajectoryVisible;
+        TrajectoryComponent->ShowTrajectory(bTrajectoryVisible);
+        
+        if (bTrajectoryVisible)
+        {
+            Debug::Print(TEXT("Trajectory visualization enabled"));
+        }
+        else
+        {
+            Debug::Print(TEXT("Trajectory visualization disabled"));
+        }
+    }
+}
+
+void ACWHeroCharacter::StartTrajectoryRecording()
+{
+    if (TrajectoryComponent)
+    {
+        TrajectoryComponent->StartRecording();
+        Debug::Print(TEXT("Trajectory recording started"));
+    }
+}
+
+void ACWHeroCharacter::StopTrajectoryRecording()
+{
+    if (TrajectoryComponent)
+    {
+        TrajectoryComponent->StopRecording();
+        Debug::Print(TEXT("Trajectory recording stopped"));
     }
 }
