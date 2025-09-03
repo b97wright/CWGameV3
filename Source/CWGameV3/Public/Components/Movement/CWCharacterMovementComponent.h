@@ -88,9 +88,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement")
 	float CrouchSpeedMultiplier = 0.5f;
 
-private:
-	// Internal helper functions
+public:
+	// Internal helper functions - made public for animation instance access
+	UFUNCTION(BlueprintCallable, Category = "Character Movement")
 	void UpdateMovementHistory();
+	
+	UFUNCTION(BlueprintCallable, Category = "Character Movement")
 	void CleanupOldHistory();
+	
+protected:
 	FVector CalculatePredictedLocation(float TimeAhead, const FVector& CurrentLocation, const FVector& CurrentVelocity) const;
 }; 
