@@ -9,6 +9,7 @@
 class ACWBaseCharacter; 
 class UCharacterMovementComponent;
 class UCWCharacterMovementComponent;
+class UCWCharacterTrajectoryComponent;
 /**
  * 
  */
@@ -30,6 +31,9 @@ protected:
 	UPROPERTY()
 	UCharacterMovementComponent* OwningMovementComponent;
 
+	UPROPERTY()
+	UCWCharacterTrajectoryComponent* OwningTrajectoryComponent;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	float GroundSpeed;
 
@@ -41,5 +45,15 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	float Velocity;
+
+	// Trajectory Data
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
+	float TrajectoryDistance;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
+	FVector TrajectoryEndPoint;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
+	bool bHasTrajectoryData;
 
 };
