@@ -27,55 +27,75 @@ void UCWCharacterAnimInstance::NativeInitializeAnimation()
 
 void UCWCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaTime)
 {
-
     if(!OwningCharacter || !OwningMovementComponent) return;
 
-    // Cast to our custom movement component to access the motion matching functions
-    UCWCharacterMovementComponent* CustomMovementComponent = Cast<UCWCharacterMovementComponent>(OwningMovementComponent);
-    if (!CustomMovementComponent) return;
-
-    // Update movement history and get trajectory data through the movement component
-    CustomMovementComponent->UpdateMovementHistory();
-    CustomMovementComponent->CleanupOldHistory();
-    CustomMovementComponent->PredictTrajectory(1.0f, 0.1f);
+    // Use the default movement component (which is now properly configured)
+    // Calculate movement data from the default movement component
+    FVector CurrentVelocity = OwningMovementComponent->Velocity;
+    Velocity = CurrentVelocity.Size();
+    GroundSpeed = CurrentVelocity.Size();
     
-    // Get trajectory information
-    FVector PredictedEndPoint = CustomMovementComponent->PredictLocation(1.0f);
-    TArray<FVector> TrajectoryPoints = CustomMovementComponent->PredictTrajectory(1.0f, 0.1f);
-    
-    // Calculate trajectory distance and time
-    float CalculatedTrajectoryDistance = 0.0f;
-    if (TrajectoryPoints.Num() > 1)
+    // Calculate direction properly for turning animations
+    if (!CurrentVelocity.IsNearlyZero())
     {
-        for (int32 i = 1; i < TrajectoryPoints.Num(); i++)
-        {
-            CalculatedTrajectoryDistance += FVector::Dist(TrajectoryPoints[i-1], TrajectoryPoints[i]);
-        }
-    }
-    
-    // Get movement data
-    Direction = CustomMovementComponent->GetMovementDirection().X;
-    Velocity = CustomMovementComponent->GetCurrentVelocity().Size();
-    GroundSpeed = CustomMovementComponent->GetCurrentSpeed();
-    
-    // Check for acceleration (you'll need to implement this in your movement component)
-    // For now, we'll use a simple velocity change check
-    static FVector PreviousVelocity = FVector::ZeroVector;
-    FVector CurrentVelocity = CustomMovementComponent->GetCurrentVelocity();
-    bHasAcceleration = !(CurrentVelocity - PreviousVelocity).IsNearlyZero(1.0f);
-    PreviousVelocity = CurrentVelocity;
-
-    // Update trajectory data if trajectory component is available
-    if (OwningTrajectoryComponent)
-    {
-        TrajectoryDistance = OwningTrajectoryComponent->GetTrajectoryDistance();
-        TrajectoryEndPoint = OwningTrajectoryComponent->GetTrajectoryEndPoint();
-        bHasTrajectoryData = TrajectoryDistance > 0.0f;
+        FVector ForwardVector = OwningCharacter->GetActorForwardVector();
+        FVector RightVector = OwningCharacter->GetActorRightVector();
+        
+        // Calculate direction relative to character's facing direction
+        float ForwardDot = FVector::DotProduct(CurrentVelocity.GetSafeNormal(), ForwardVector);
+        float RightDot = FVector::DotProduct(CurrentVelocity.GetSafeNormal(), RightVector);
+        
+        // Use atan2 for proper direction calculation (-1 to 1)
+        Direction = FMath::Atan2(RightDot, ForwardDot) / PI;
     }
     else
     {
+        Direction = 0.0f;
+    }
+    
+    bIsMoving = !CurrentVelocity.IsNearlyZero(10.0f);
+    bIsOnGround = OwningMovementComponent->IsMovingOnGround();
+    bIsSprinting = false; // You can implement sprint detection if needed
+    bIsCrouching = OwningMovementComponent->IsCrouching();
+    bIsFalling = OwningMovementComponent->IsFalling();
+    
+    // Check for acceleration
+    static FVector PreviousVelocity = FVector::ZeroVector;
+    bHasAcceleration = !(CurrentVelocity - PreviousVelocity).IsNearlyZero(5.0f);
+    PreviousVelocity = CurrentVelocity;
+
+
+    // Get trajectory data from the character (which handles all the complex calculations)
+    if (ACWHeroCharacter* HeroCharacter = Cast<ACWHeroCharacter>(OwningCharacter))
+    {
+        TrajectoryDistance = HeroCharacter->GetTrajectoryDistance();
+        TrajectoryEndPoint = HeroCharacter->GetTrajectoryEndPoint();
+        bHasTrajectoryData = HeroCharacter->HasTrajectoryData();
+        
+        // Get the Pose Search compatible trajectory directly
+        PoseSearchTrajectory = HeroCharacter->GetPoseSearchTrajectory();
+        
+        // Also populate legacy arrays for backward compatibility
+        TrajectoryPositions.Empty();
+        TrajectoryRotations.Empty();
+        TrajectoryTimes.Empty();
+        
+        for (const FPoseSearchQueryTrajectorySample& Sample : PoseSearchTrajectory.Samples)
+        {
+            TrajectoryPositions.Add(Sample.Position);
+            TrajectoryRotations.Add(Sample.Facing);
+            TrajectoryTimes.Add(Sample.AccumulatedSeconds);
+        }
+    }
+    else
+    {
+        // Fallback if not a hero character
         TrajectoryDistance = 0.0f;
         TrajectoryEndPoint = FVector::ZeroVector;
+        PoseSearchTrajectory.Samples.Empty();
+        TrajectoryPositions.Empty();
+        TrajectoryRotations.Empty();
+        TrajectoryTimes.Empty();
         bHasTrajectoryData = false;
     }
 
@@ -83,4 +103,3 @@ void UCWCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaTime)
 	// This function is called every frame and is thread-safe
 	// Use this for updating animation state based on character movement, etc.
 }
-

@@ -15,7 +15,7 @@ public class CWGameV3 : ModuleRules
 			"InputCore",
 			"EnhancedInput",
 			"GameplayTags",
-		
+			"PoseSearch"
 			 });
 	}
 }

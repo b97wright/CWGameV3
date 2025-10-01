@@ -4,7 +4,6 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Components/Movement/CWCharacterMovementComponent.h"
 #include "Components/Trajectory/CWCharacterTrajectoryComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -18,7 +17,7 @@
 ACWHeroCharacter::ACWHeroCharacter()
 {
     // Set this character to call Tick() every frame
-    PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = true;
 
     // Set capsule size
     GetCapsuleComponent()->InitCapsuleSize(42.0f, 96.0f);
@@ -28,7 +27,10 @@ ACWHeroCharacter::ACWHeroCharacter()
     bUseControllerRotationYaw = false;
     bUseControllerRotationRoll = false;
 
-    // Configure character movement
+    // DON'T create a custom movement component - just use the default one
+    // CWMovementComponent = CreateDefaultSubobject<UCWCharacterMovementComponent>(TEXT("CharacterMovement"));
+    
+    // Configure the DEFAULT character movement
     GetCharacterMovement()->bOrientRotationToMovement = true;
     GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
     GetCharacterMovement()->JumpZVelocity = 600.0f;
@@ -36,6 +38,7 @@ ACWHeroCharacter::ACWHeroCharacter()
     GetCharacterMovement()->MinAnalogWalkSpeed = 20.0f;
     GetCharacterMovement()->BrakingDecelerationWalking = 2000.0f;
     GetCharacterMovement()->AirControl = 0.2f;
+    
 
     // Create and setup camera boom
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -47,12 +50,15 @@ ACWHeroCharacter::ACWHeroCharacter()
     FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
     FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
     FollowCamera->bUsePawnControlRotation = false;
-
-    // Create and setup custom movement component
-    CWMovementComponent = CreateDefaultSubobject<UCWCharacterMovementComponent>(TEXT("CWMovementComponent"));
     
     // Create and setup trajectory component
     TrajectoryComponent = CreateDefaultSubobject<UCWCharacterTrajectoryComponent>(TEXT("TrajectoryComponent"));
+    
+    // Initialize trajectory data
+    CachedTrajectoryDistance = 0.0f;
+    CachedTrajectoryEndPoint = FVector::ZeroVector;
+    bHasValidTrajectoryData = false;
+    PoseSearchTrajectory.Samples.Empty();
 }
 
 void ACWHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -85,9 +91,36 @@ void ACWHeroCharacter::BeginPlay()
     Debug::Print(TEXT("Hello World This is Version 3"));
 }
 
+void ACWHeroCharacter::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+    
+    // Update trajectory data every frame
+    UpdateTrajectoryData();
+}
+
 void ACWHeroCharacter::Input_Move(const FInputActionValue &InputActionValue)
 {
+    if (!GetCWMovementComponent())
+    {
+        Debug::Print(TEXT("ERROR: Movement component is null!"));
+        return;
+    }
+
     const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
+    Debug::Print(FString::Printf(TEXT("Input received: X=%.2f, Y=%.2f"), MovementVector.X, MovementVector.Y));
+    
+    // Debug movement component
+    if (GetCharacterMovement())
+    {
+        Debug::Print(FString::Printf(TEXT("Movement Component: %s, MaxSpeed: %.2f"), 
+            *GetCharacterMovement()->GetClass()->GetName(), 
+            GetCharacterMovement()->MaxWalkSpeed));
+    }
+    else
+    {
+        Debug::Print(TEXT("ERROR: No movement component found!"));
+    }
 
     const FRotator MovementRotation(0.0f, Controller->GetControlRotation().Yaw, 0.0f);
 
@@ -138,24 +171,24 @@ void ACWHeroCharacter::Input_Jump(const FInputActionValue &InputActionValue)
 
 void ACWHeroCharacter::Input_Sprint(const FInputActionValue &InputActionValue)
 {
-    if (CWMovementComponent)
+    if (GetCWMovementComponent())
     {
         if (InputActionValue.Get<bool>())
         {
-            CWMovementComponent->StartSprint();
+            GetCWMovementComponent()->StartSprint();
         }
         else
         {
-            CWMovementComponent->StopSprint();
+            GetCWMovementComponent()->StopSprint();
         }
     }
 }
 
 void ACWHeroCharacter::Input_Crouch(const FInputActionValue &InputActionValue)
 {
-    if (CWMovementComponent && InputActionValue.Get<bool>())
+    if (GetCWMovementComponent() && InputActionValue.Get<bool>())
     {
-        CWMovementComponent->ToggleCrouch();
+        GetCWMovementComponent()->ToggleCrouch();
     }
 }
 
@@ -180,25 +213,25 @@ void ACWHeroCharacter::Input_ToggleTrajectory(const FInputActionValue &InputActi
 
 void ACWHeroCharacter::StartSprint()
 {
-    if (CWMovementComponent)
+    if (GetCWMovementComponent())
     {
-        CWMovementComponent->StartSprint();
+        GetCWMovementComponent()->StartSprint();
     }
 }
 
 void ACWHeroCharacter::StopSprint()
 {
-    if (CWMovementComponent)
+    if (GetCWMovementComponent())
     {
-        CWMovementComponent->StopSprint();
+        GetCWMovementComponent()->StopSprint();
     }
 }
 
 void ACWHeroCharacter::ToggleCrouch()
 {
-    if (CWMovementComponent)
+    if (GetCWMovementComponent())
     {
-        CWMovementComponent->ToggleCrouch();
+        GetCWMovementComponent()->ToggleCrouch();
     }
 }
 
@@ -238,3 +271,76 @@ void ACWHeroCharacter::StopTrajectoryRecording()
         Debug::Print(TEXT("Trajectory recording stopped"));
     }
 }
+
+void ACWHeroCharacter::UpdateTrajectoryData()
+{
+    if (TrajectoryComponent)
+    {
+        // Update cached trajectory data from the trajectory component
+        CachedTrajectoryDistance = TrajectoryComponent->GetTrajectoryDistance();
+        CachedTrajectoryEndPoint = TrajectoryComponent->GetTrajectoryEndPoint();
+        TArray<FVector> TrajectoryPoints = TrajectoryComponent->GetTrajectoryPoints();
+        
+        // Convert to Pose Search trajectory format
+        PoseSearchTrajectory.Samples.Empty();
+        
+        for (int32 i = 0; i < TrajectoryPoints.Num(); i++)
+        {
+            FPoseSearchQueryTrajectorySample Sample;
+            Sample.Position = TrajectoryPoints[i];
+            Sample.Facing = FQuat::Identity; // Default facing direction (can be improved later)
+            Sample.AccumulatedSeconds = i * 0.1f; // Time step of 0.1 seconds
+            
+            PoseSearchTrajectory.Samples.Add(Sample);
+        }
+        
+        // Determine if we have valid trajectory data
+        bHasValidTrajectoryData = (CachedTrajectoryDistance > 0.0f) && (TrajectoryPoints.Num() > 0);
+    }
+    else
+    {
+        // Reset data if no trajectory component
+        CachedTrajectoryDistance = 0.0f;
+        CachedTrajectoryEndPoint = FVector::ZeroVector;
+        PoseSearchTrajectory.Samples.Empty();
+        bHasValidTrajectoryData = false;
+    }
+}
+
+float ACWHeroCharacter::GetTrajectoryDistance() const
+{
+    return CachedTrajectoryDistance;
+}
+
+FVector ACWHeroCharacter::GetTrajectoryEndPoint() const
+{
+    return CachedTrajectoryEndPoint;
+}
+
+bool ACWHeroCharacter::HasTrajectoryData() const
+{
+    return bHasValidTrajectoryData;
+}
+
+TArray<FVector> ACWHeroCharacter::GetTrajectoryPoints() const
+{
+    TArray<FVector> Points;
+    for (const FPoseSearchQueryTrajectorySample& Sample : PoseSearchTrajectory.Samples)
+    {
+        Points.Add(Sample.Position);
+    }
+    return Points;
+}
+
+const FPoseSearchQueryTrajectory& ACWHeroCharacter::GetPoseSearchTrajectory() const
+{
+    return PoseSearchTrajectory;
+}
+
+UCharacterMovementComponent* ACWHeroCharacter::GetCharacterMovement() const
+{
+	return GetCWMovementComponent();
+}
+
+UFUNCTION(BlueprintCallable, Category = "Character Components")
+UCWCharacterMovementComponent* ACWHeroCharacter::GetCWMovementComponent() const { return Cast<UCWCharacterMovementComponent>(GetCharacterMovement()); }

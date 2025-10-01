@@ -11,7 +11,6 @@ UCWCharacterMovementComponent::UCWCharacterMovementComponent()
 	// Initialize default values
 	bIsSprinting = false;
 	bIsCrouching = false;
-	MaxHistorySize = 50;
 	SprintSpeedMultiplier = 1.5f;
 	CrouchSpeedMultiplier = 0.5f;
 
@@ -32,19 +31,12 @@ void UCWCharacterMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	// Initialize movement history
-	MovementHistory.Empty();
-	TimeHistory.Empty();
-	
 	Debug::Print(TEXT("CWCharacterMovementComponent initialized"));
 }
 
 void UCWCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// Update movement history for trajectory prediction
-	UpdateMovementHistory();
 }
 
 void UCWCharacterMovementComponent::SetMovementMode(EMovementMode NewMovementMode, uint8 NewCustomMode)
@@ -73,7 +65,14 @@ void UCWCharacterMovementComponent::SetMovementMode(EMovementMode NewMovementMod
 
 bool UCWCharacterMovementComponent::IsMoving() const
 {
-	return !Velocity.IsNearlyZero(1.0f);
+	// Use a higher threshold to avoid micro-movements triggering movement state
+	return !Velocity.IsNearlyZero(10.0f);
+}
+
+bool UCWCharacterMovementComponent::IsMovingOnGround() const
+{
+	// Check if character is on ground and moving
+	return Super::IsMovingOnGround() && IsMoving();
 }
 
 bool UCWCharacterMovementComponent::IsSprinting() const
@@ -129,13 +128,7 @@ void UCWCharacterMovementComponent::ToggleCrouch()
 
 FVector UCWCharacterMovementComponent::PredictLocation(float TimeAhead) const
 {
-	if (MovementHistory.Num() < 2)
-	{
-		// Not enough history, use current velocity
-		return GetOwner()->GetActorLocation() + (Velocity * TimeAhead);
-	}
-
-	// Use the last known location and velocity for prediction
+	// Use current location and velocity for prediction
 	FVector CurrentLocation = GetOwner()->GetActorLocation();
 	return CalculatePredictedLocation(TimeAhead, CurrentLocation, Velocity);
 }
@@ -144,19 +137,7 @@ TArray<FVector> UCWCharacterMovementComponent::PredictTrajectory(float Duration,
 {
 	TArray<FVector> TrajectoryPoints;
 	
-	if (MovementHistory.Num() < 2)
-	{
-		// Simple linear prediction if no history
-		FVector CurrentLocation = GetOwner()->GetActorLocation();
-		for (float Time = 0.0f; Time <= Duration; Time += TimeStep)
-		{
-			FVector PredictedPoint = CurrentLocation + (Velocity * Time);
-			TrajectoryPoints.Add(PredictedPoint);
-		}
-		return TrajectoryPoints;
-	}
-
-	// Use movement history for more accurate prediction
+	// Simple linear prediction using current velocity
 	FVector CurrentLocation = GetOwner()->GetActorLocation();
 	for (float Time = 0.0f; Time <= Duration; Time += TimeStep)
 	{
@@ -186,29 +167,6 @@ FVector UCWCharacterMovementComponent::GetMovementDirection() const
 	return Velocity.GetSafeNormal();
 }
 
-void UCWCharacterMovementComponent::UpdateMovementHistory()
-{
-	if (GetOwner())
-	{
-		FVector CurrentLocation = GetOwner()->GetActorLocation();
-		float CurrentTime = GetWorld()->GetTimeSeconds();
-		
-		MovementHistory.Add(CurrentLocation);
-		TimeHistory.Add(CurrentTime);
-		
-		CleanupOldHistory();
-	}
-}
-
-void UCWCharacterMovementComponent::CleanupOldHistory()
-{
-	// Remove old entries if we exceed the maximum history size
-	while (MovementHistory.Num() > MaxHistorySize)
-	{
-		MovementHistory.RemoveAt(0);
-		TimeHistory.RemoveAt(0);
-	}
-}
 
 FVector UCWCharacterMovementComponent::CalculatePredictedLocation(float TimeAhead, const FVector& CurrentLocation, const FVector& CurrentVelocity) const
 {

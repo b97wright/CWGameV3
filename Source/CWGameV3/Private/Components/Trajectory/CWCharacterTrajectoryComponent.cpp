@@ -52,10 +52,15 @@ void UCWCharacterTrajectoryComponent::TickComponent(float DeltaTime, ELevelTick 
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Update trajectory if showing
-	if (bShowTrajectory && MovementComponent)
+	// Always update trajectory data (needed for animation system)
+	if (MovementComponent)
 	{
 		UpdateTrajectory();
+	}
+
+	// Draw trajectory if showing
+	if (bShowTrajectory)
+	{
 		DrawTrajectory();
 	}
 

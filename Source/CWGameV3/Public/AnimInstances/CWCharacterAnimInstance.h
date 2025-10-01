@@ -4,12 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "AnimInstances/CWBaseAnimInstance.h"
+#include "PoseSearch/PoseSearchTrajectoryTypes.h"
 #include "CWCharacterAnimInstance.generated.h"
 
 class ACWBaseCharacter; 
 class UCharacterMovementComponent;
 class UCWCharacterMovementComponent;
 class UCWCharacterTrajectoryComponent;
+
+// Using UE5's built-in Pose Search trajectory structures
+
 /**
  * 
  */
@@ -46,12 +50,41 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	float Velocity;
 
-	// Trajectory Data
+	// Movement state detection
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|LocomotionData")
+	bool bIsMoving;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|LocomotionData")
+	bool bIsOnGround;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|LocomotionData")
+	bool bIsSprinting;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|LocomotionData")
+	bool bIsCrouching;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|LocomotionData")
+	bool bIsFalling;
+
+	// Legacy trajectory arrays (kept for backward compatibility if needed)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
+	TArray<FVector> TrajectoryPositions;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
+	TArray<FQuat> TrajectoryRotations;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
+	TArray<float> TrajectoryTimes;
+
+	// Additional trajectory data properties (Pose Search compatible)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
 	float TrajectoryDistance;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
 	FVector TrajectoryEndPoint;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
+	FPoseSearchQueryTrajectory PoseSearchTrajectory;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimData|TrajectoryData")
 	bool bHasTrajectoryData;

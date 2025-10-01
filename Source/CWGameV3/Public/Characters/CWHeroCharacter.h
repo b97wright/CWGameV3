@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "CWDebugHelper.h"
 #include "CWBaseCharacter.h"
+#include "PoseSearch/PoseSearchTrajectoryTypes.h"
 #include "CWHeroCharacter.generated.h"
 
 class UCameraComponent;
@@ -38,15 +39,17 @@ public:
 	ACWHeroCharacter(); // Make a default constructor for the hero character class
 
 
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 public:
 	// Component access functions
 	UFUNCTION(BlueprintCallable, Category = "Character Components")
-	UCWCharacterMovementComponent* GetCWMovementComponent() const { return CWMovementComponent; }
+	UCWCharacterMovementComponent* GetCWMovementComponent() const { return Cast<UCWCharacterMovementComponent>(GetCharacterMovement()); }
 
 	UFUNCTION(BlueprintCallable, Category = "Character Components")
 	UCWCharacterTrajectoryComponent* GetTrajectoryComponent() const { return TrajectoryComponent; }
@@ -71,6 +74,23 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character Trajectory")
 	void StopTrajectoryRecording();
 
+	// Trajectory data access for animation
+	UFUNCTION(BlueprintPure, Category = "Character Trajectory")
+	float GetTrajectoryDistance() const;
+
+	UFUNCTION(BlueprintPure, Category = "Character Trajectory")
+	FVector GetTrajectoryEndPoint() const;
+
+	UFUNCTION(BlueprintPure, Category = "Character Trajectory")
+	bool HasTrajectoryData() const;
+
+	UFUNCTION(BlueprintPure, Category = "Character Trajectory")
+	TArray<FVector> GetTrajectoryPoints() const;
+
+	// Pose Search compatible trajectory access
+	UFUNCTION(BlueprintPure, Category = "Character Trajectory")
+	const FPoseSearchQueryTrajectory& GetPoseSearchTrajectory() const;
+
 private:
 
 #pragma region Components
@@ -89,6 +109,23 @@ UCWCharacterTrajectoryComponent* TrajectoryComponent;
 
 #pragma endregion
 
+#pragma region Trajectory Data
+
+// Cached trajectory data for animation system (Pose Search compatible)
+UPROPERTY(BlueprintReadOnly, Category = "Trajectory Data", meta = (AllowPrivateAccess = "true"))
+FPoseSearchQueryTrajectory PoseSearchTrajectory;
+
+UPROPERTY(BlueprintReadOnly, Category = "Trajectory Data", meta = (AllowPrivateAccess = "true"))
+float CachedTrajectoryDistance;
+
+UPROPERTY(BlueprintReadOnly, Category = "Trajectory Data", meta = (AllowPrivateAccess = "true"))
+FVector CachedTrajectoryEndPoint;
+
+UPROPERTY(BlueprintReadOnly, Category = "Trajectory Data", meta = (AllowPrivateAccess = "true"))
+bool bHasValidTrajectoryData;
+
+#pragma endregion
+
 
 #pragma region Input
 
@@ -102,6 +139,12 @@ void Input_Sprint(const FInputActionValue& InputActionValue);
 void Input_Crouch(const FInputActionValue& InputActionValue);
 void Input_ToggleTrajectory(const FInputActionValue& InputActionValue);
 
+#pragma endregion
+
+#pragma region Trajectory Management
+
+// Private function to update cached trajectory data
+void UpdateTrajectoryData();
 
 #pragma endregion
 

@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Character Movement")
 	bool IsMoving() const;
 
+	// Override parent function without UFUNCTION declaration
+	bool IsMovingOnGround() const override;
+
 	UFUNCTION(BlueprintPure, Category = "Character Movement")
 	bool IsSprinting() const;
 
@@ -71,16 +74,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
 	bool bIsCrouching;
 
-	// Movement history for trajectory prediction
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
-	TArray<FVector> MovementHistory;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Character Movement")
-	TArray<float> TimeHistory;
-
 	// Configuration
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement")
-	int32 MaxHistorySize = 50;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement")
 	float SprintSpeedMultiplier = 1.5f;
@@ -88,14 +82,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement")
 	float CrouchSpeedMultiplier = 0.5f;
 
-public:
-	// Internal helper functions - made public for animation instance access
-	UFUNCTION(BlueprintCallable, Category = "Character Movement")
-	void UpdateMovementHistory();
-	
-	UFUNCTION(BlueprintCallable, Category = "Character Movement")
-	void CleanupOldHistory();
-	
 protected:
 	FVector CalculatePredictedLocation(float TimeAhead, const FVector& CurrentLocation, const FVector& CurrentVelocity) const;
 }; 
